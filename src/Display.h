@@ -22,7 +22,7 @@ private:
 public:
     Display();
     ~Display();
-    GLFWwindow* getWindow();
+    GLFWwindow* getWindow() const;
     void update(GLuint vao, Shader shader, Camera& camera);
     // Takes a vao and shader for drawing
     void render();

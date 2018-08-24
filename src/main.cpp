@@ -22,12 +22,12 @@ int main()
     std::cout << "Renderer: " << renderer << "\n";
     std::cout << "Version: " << version << "\n";
 
-    GLfloat vertices[] = { -6.0f, 6.0f, 0.0f,
-        -6.0f, -6.0, 0.0f,
-        6.0f, -6.0f, 0.0f,
-        -6.0f, 6.0f, 0.0f,
-        6.0f, 6.0f, 0.0f,
-        6.0f, -6.0f, 0.0f
+    GLfloat vertices[] = { -6.0f, 6.0f, -6.0f,
+        -6.0f, -6.0, -6.0f,
+        6.0f, -6.0f, -6.0f,
+        -6.0f, 6.0f, -6.0f,
+        6.0f, 6.0f, -6.0f,
+        6.0f, -6.0f, -6.0f
     };
 
     GLuint vbo = 0;
@@ -54,13 +54,13 @@ int main()
 
     while (!glfwWindowShouldClose(display.getWindow())) 
     {
-        float currentFrame = glfwGetTime();
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
         glfwGetCursorPos(display.getWindow(), &xPos, &yPos);
 
-        camera.speed = 20.0f * deltaTime;
+        camera.speed() = 20.0f * deltaTime;
         
         InputManager::processKeyPress(display.getWindow(), camera);
         InputManager::processMouseMove(display.getWindow(), xPos, yPos, oldXPos, oldYPos, camera);

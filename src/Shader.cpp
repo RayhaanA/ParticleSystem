@@ -52,7 +52,7 @@ void Shader::useShader()
     glUseProgram(program);
 }
 
-GLuint Shader::getProgram()
+GLuint Shader::getProgram() const
 {
     return program;
 }

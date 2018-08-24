@@ -20,7 +20,7 @@ Display::Display()
        std::cerr << "Couldn't initialize glfw!" << std::endl;
     }
 
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Particle System", nullptr, nullptr);
+    window = glfwCreateWindow(static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT), "Particle System", nullptr, nullptr);
 
     if (!window) 
     {
@@ -44,7 +44,7 @@ Display::~Display()
     glfwTerminate();
 }
 
-GLFWwindow* Display::getWindow()
+GLFWwindow* Display::getWindow() const
 {
     return window;
 }
@@ -56,19 +56,19 @@ void Display::update(GLuint vao, Shader shader, Camera& camera)
     shader.useShader();
 
     // update the uniform color
-    float timeValue = glfwGetTime();
+    float timeValue = static_cast<float>(glfwGetTime());
     float greenValue = sin(timeValue) / 2.0f + 0.5f;
 
     shader.set4fv("newColour", glm::vec4(1.0, 0.4, greenValue, 1.0));
 
     glm::mat4 model, view, projection;
-    model = glm::rotate(model, timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
-    view = camera.view;
-    projection = glm::perspective(glm::radians(camera.fov), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 100.0f);
+    model = glm::mat4();//glm::rotate(model, timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
+    view = camera.view();
+    projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
-    shader.setMatrix4fv("model", model);
-    shader.setMatrix4fv("view", view);
-    shader.setMatrix4fv("projection", projection);
+    glm::mat4 mvp = projection * view * model;
+
+    shader.setMatrix4fv("mvp", mvp);
 
     glBindVertexArray(vao);
 
