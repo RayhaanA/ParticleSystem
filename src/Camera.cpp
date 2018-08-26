@@ -37,7 +37,6 @@ void Camera::updateCameraView()
 
     // Get new direction vector from view matrix
     _direction = getViewDirection();
-    std::cout << _pitch << "\n";
 }
 
 void Camera::setViewDirection(glm::vec3 d)

@@ -22,6 +22,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Display.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\Shader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -29,11 +30,12 @@
     <ClCompile Include="src\Display.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{D7261363-6311-4413-AB21-7A86E9F71F5D}</ProjectGuid>
+    <ProjectGuid>{FE455597-36BC-4DA8-9275-6E5930D556D6}</ProjectGuid>
     <RootNamespace>OpenGLIntroduction</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>ParticleSystem</ProjectName>

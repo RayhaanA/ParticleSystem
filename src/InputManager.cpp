@@ -51,13 +51,13 @@ void InputManager::processMouseMove(GLFWwindow* window, double x, double y, doub
         camera.yaw() += delta.x;
         camera.pitch() += delta.y;
 
-        if (camera.pitch() > 1.0f)
+        if (camera.pitch() > 1.4f)
         {
-            camera.pitch() = 1.0f;
+            camera.pitch() = 1.4f;
         }
-        else if (camera.pitch() < -1.0f)
+        else if (camera.pitch() < -1.4f)
         {
-            camera.pitch() = -1.0f;
+            camera.pitch() = -1.4f;
         }
     }
 

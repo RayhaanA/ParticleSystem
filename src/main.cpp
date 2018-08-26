@@ -10,6 +10,8 @@
 
 int main()
 {
+    //std::ios_base::sync_with_stdio(false);
+
     Display display;
 
     Shader shader("./shaders/vertex_shader.vert", "./shaders/fragment_shader.frag");
@@ -45,8 +47,9 @@ int main()
 
     display.setBackgroundColour(0.7f, 0.3f, 1.0f, 1.0f);
 
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
+    double deltaTime = 0.0f;
+    double lastFrame = glfwGetTime();
+    // int numFrames = 0;
     double oldXPos = 0;
     double oldYPos = 0;
     double xPos = 400;
@@ -54,9 +57,9 @@ int main()
 
     while (!glfwWindowShouldClose(display.getWindow())) 
     {
-        float currentFrame = static_cast<float>(glfwGetTime());
+        double currentFrame = glfwGetTime();
+
         deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
         
         glfwGetCursorPos(display.getWindow(), &xPos, &yPos);
 
@@ -70,6 +73,8 @@ int main()
 
         display.update(vao, shader, camera);
         display.render();
+
+        lastFrame = currentFrame;
     }
 
     return 0;
