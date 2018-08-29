@@ -4,6 +4,7 @@
 #include <gtc\type_ptr.hpp>
 #include <iostream>
 #include "InputManager.h"
+#include "Particle.h"
 
 void print4x4(glm::mat4 m)
 {
@@ -54,10 +55,11 @@ GLFWwindow* Display::getWindow() const
     return window;
 }
 
-void Display::update(GLuint vao, Shader shader, Camera& camera, std::vector<Particle>& particles)
+void Display::update(GLuint vao, Shader shader, Camera& camera, double elapsedTime, std::vector<Particle>& particles)
 {
     glClearColor(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     shader.useShader();
 
     float timeValue = static_cast<float>(glfwGetTime());
@@ -65,12 +67,14 @@ void Display::update(GLuint vao, Shader shader, Camera& camera, std::vector<Part
 
     shader.set4fv("newColour", glm::vec4(greenValue, greenValue, greenValue, 1.0));
 
+    camera.speed() = 20.0f * static_cast<float>(elapsedTime);
+   
     glm::mat4 view = camera.view();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
-    for (unsigned int i = 0; i < MAX_PARTICLES; i++)
+    for (unsigned int i = 0; i < Particle::MAX_PARTICLES; i++)
     {
-        // particles[i].update();
+        particles[i].update(elapsedTime);
         glBindVertexArray(vao);
 
         glm::mat4 model;

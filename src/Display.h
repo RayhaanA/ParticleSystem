@@ -25,8 +25,7 @@ public:
     Display();
     ~Display();
     GLFWwindow* getWindow() const;
-    void update(GLuint vao, Shader shader, Camera& camera, std::vector<Particle>& particles);
-    // Takes a vao and shader for drawing
+    void update(GLuint vao, Shader shader, Camera& camera, double elapsedTime, std::vector<Particle>& particles);
     void render();
     void setBackgroundColour(GLclampf r, GLclampf g, GLclampf b, GLclampf a);
 };

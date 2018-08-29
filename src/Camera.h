@@ -14,7 +14,10 @@ private:
     float _speed;
     float _fov;
     float _sensitivity;
+
 public:
+    float DEFAULT_CAM_SPEED = 0.03f;
+    float SHIFT_CAM_SPEED = 0.2f;
     Camera();
     ~Camera();
     void updateCameraView();

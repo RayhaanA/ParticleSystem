@@ -5,5 +5,5 @@
 namespace InputManager
 {
     void processKeyPress(GLFWwindow* window, Camera& camera);
-    void processMouseMove(GLFWwindow* window, double x, double y, double& oldX, double& oldY, Camera& camera);
+    void processMouseMove(GLFWwindow* window, double x, double y, double oldX, double oldY, Camera& camera);
 }

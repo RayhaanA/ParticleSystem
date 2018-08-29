@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include <string>
 #include <iostream>
+#include <vector>
 #include <gtc\type_ptr.hpp>
 
 Shader::Shader(const std::string &vertexShader, const std::string &fragmentShader)
@@ -35,10 +36,50 @@ Shader::Shader(const std::string &vertexShader, const std::string &fragmentShade
     glShaderSource(fs, 1, &fsContentToChar, nullptr);
     glCompileShader(fs);
 
+    GLint isVsCompiled = 0;
+    GLint isFsCompiled = 0;
+    glGetShaderiv(vs, GL_COMPILE_STATUS, &isVsCompiled);
+    glGetShaderiv(fs, GL_COMPILE_STATUS, &isFsCompiled);
+
+    if (isVsCompiled == GL_FALSE || isFsCompiled == GL_FALSE)
+    {
+        GLint maxLengthVs = 0;
+        GLint maxLengthFs = 0;
+        glGetShaderiv(vs, GL_INFO_LOG_LENGTH, &maxLengthVs);
+        glGetShaderiv(fs, GL_INFO_LOG_LENGTH, &maxLengthFs);
+
+        // The maxLength includes the NULL character
+        std::vector<GLchar> errorLogVs(maxLengthVs);
+        std::vector<GLchar> errorLogFs(maxLengthFs);
+
+        glGetShaderInfoLog(vs, maxLengthVs, &maxLengthVs, &errorLogVs[0]);
+        glGetShaderInfoLog(fs, maxLengthFs, &maxLengthFs, &errorLogFs[0]);
+
+        for (const auto& i : errorLogVs)
+        {
+            std::cerr << i;
+        }
+
+        for (const auto& i : errorLogFs)
+        {
+            std::cerr << i;
+        }
+
+        glDeleteShader(vs);
+        glDeleteShader(fs);
+        return;
+    }
+
     program = glCreateProgram();
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
+
+    // Clean up unneccesary resources
+    glDetachShader(program, vs);
+    glDetachShader(program, fs);
+    glDeleteShader(vs);
+    glDeleteShader(fs);
 }
 
 

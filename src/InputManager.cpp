@@ -6,11 +6,11 @@ void InputManager::processKeyPress(GLFWwindow* window, Camera& camera)
 {   
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     {
-        camera.speed() = 0.2f;
+        camera.speed() = camera.SHIFT_CAM_SPEED;
     }
     else
     {
-        camera.speed() = 0.03f;
+        camera.speed() = camera.DEFAULT_CAM_SPEED;
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -44,7 +44,7 @@ void InputManager::processKeyPress(GLFWwindow* window, Camera& camera)
     }
 }
 
-void InputManager::processMouseMove(GLFWwindow* window, double x, double y, double& oldX, double& oldY, Camera& camera)
+void InputManager::processMouseMove(GLFWwindow* window, double x, double y, double oldX, double oldY, Camera& camera)
 {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {

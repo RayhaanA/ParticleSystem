@@ -14,9 +14,10 @@ int main()
 
     Display display;
 
+    Camera camera;
+
     Shader shader("./shaders/vertex_shader.vert", "./shaders/fragment_shader.frag");
 
-    Camera camera;
 
     std::string renderer(reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
     std::string version(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
@@ -26,9 +27,9 @@ int main()
 
     std::vector<Particle> particles;
     
-    for (unsigned int i = 0; i < MAX_PARTICLES / 10; i++)
+    for (unsigned int i = 0; i < Particle::MAX_PARTICLES / 10; i++)
     {
-        for (unsigned int j = 0; j < MAX_PARTICLES / 10; j++)
+        for (unsigned int j = 0; j < Particle::MAX_PARTICLES / 10; j++)
         {
             particles.push_back(Particle({ -10.0f + i * 2.0f, -10.0f + j * 2.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }));
         }
@@ -58,11 +59,11 @@ int main()
 
     double deltaTime = 0.0f;
     double lastFrame = glfwGetTime();
-    // int numFrames = 0;
     double oldXPos = 0;
     double oldYPos = 0;
     double xPos = 400;
     double yPos = 300;
+    // int numFrames = 0;
 
     while (!glfwWindowShouldClose(display.getWindow())) 
     {
@@ -72,16 +73,13 @@ int main()
         
         glfwGetCursorPos(display.getWindow(), &xPos, &yPos);
 
-        camera.speed() = 20.0f * static_cast<float>(deltaTime);
-        PARTICLE_SPEED = 0.1f * static_cast<float>(deltaTime);
-
         InputManager::processKeyPress(display.getWindow(), camera);
         InputManager::processMouseMove(display.getWindow(), xPos, yPos, oldXPos, oldYPos, camera);
 
         oldXPos = xPos;
         oldYPos = yPos;
 
-        display.update(vao, shader, camera, particles);
+        display.update(vao, shader, camera, deltaTime, particles);
         display.render();
 
         lastFrame = currentFrame;
