@@ -1,5 +1,6 @@
 #include "InputManager.h"
 #include <iostream>
+#include "Particle.h"
 
 void InputManager::processKeyPress(GLFWwindow* window, Camera& camera)
 {   
@@ -16,27 +17,30 @@ void InputManager::processKeyPress(GLFWwindow* window, Camera& camera)
     {
         camera.position() += camera.speed() * camera.direction();
     }
+
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
         camera.position() -= camera.speed() * camera.direction();
     }
+
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
         camera.position() -= glm::cross(camera.direction(), camera.up()) * camera.speed();
     }
+
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
         camera.position() += glm::cross(camera.direction(), camera.up()) * camera.speed();
     }
+
+    // Reset view ot origin
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
         camera.pitch() = 0.0f;
         camera.yaw() = 0.0f;
-        camera.position() = glm::vec3(0.0f, 0.0f, 30.0f);
-        camera.direction() = glm::vec3(0.0f, 0.0f, -1.0f);
-        camera.view()[0][2] = 0.0f;
-        camera.view()[1][2] = 0.0f;
-        camera.view()[2][2] = -1.0f;
+        camera.position() = { 0.0f, 0.0f, 30.0f };
+        camera.direction() = { 0.0f, 0.0f, -1.0f };
+        camera.setViewDirection({ 0.0f, 0.0f, -1.0f });
     }
 }
 

@@ -5,14 +5,14 @@
 
 Camera::Camera()
 {
-    _position = glm::vec3(0.0f, 0.0f, 30.0f);
-    _up = glm::vec3(0.0f, 1.0f, 0.0f);
-    _direction = glm::vec3(0.0f, 0.0f, -1.0f);
+    _position = { 0.0f, 0.0f, 30.0f };
+    _up = { 0.0f, 1.0f, 0.0f };
+    _direction = { 0.0f, 0.0f, -1.0f };
     _speed = 0.03f;
     _pitch = 0.0f;
     _yaw = 0.0f;
     _fov = 45.0f;
-    _sensitivity = 0.005f;
+    _sensitivity = 0.0025f;
 }
 
 Camera::~Camera()

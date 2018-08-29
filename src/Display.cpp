@@ -20,6 +20,8 @@ Display::Display()
        std::cerr << "Couldn't initialize glfw!" << std::endl;
     }
 
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
     window = glfwCreateWindow(static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT), "Particle System", nullptr, nullptr);
 
     if (!window) 
@@ -37,6 +39,9 @@ Display::Display()
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+    // Wireframe mode: GL_LINE, Normal: GL_FILL
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 Display::~Display()
@@ -49,30 +54,38 @@ GLFWwindow* Display::getWindow() const
     return window;
 }
 
-void Display::update(GLuint vao, Shader shader, Camera& camera)
+void Display::update(GLuint vao, Shader shader, Camera& camera, std::vector<Particle>& particles)
 {
     glClearColor(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shader.useShader();
 
-    // update the uniform color
     float timeValue = static_cast<float>(glfwGetTime());
     float greenValue = sin(timeValue) / 2.0f + 0.5f;
 
-    shader.set4fv("newColour", glm::vec4(1.0, 0.4, greenValue, 1.0));
+    shader.set4fv("newColour", glm::vec4(greenValue, greenValue, greenValue, 1.0));
 
-    glm::mat4 model, view, projection;
-    model = glm::mat4();//glm::rotate(model, timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
-    view = camera.view();
-    projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
+    glm::mat4 view = camera.view();
+    glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
-    glm::mat4 mvp = projection * view * model;
+    for (unsigned int i = 0; i < MAX_PARTICLES; i++)
+    {
+        // particles[i].update();
+        glBindVertexArray(vao);
 
-    shader.setMatrix4fv("mvp", mvp);
+        glm::mat4 model;
+        model = glm::translate(model, particles[i].position);
+        model = glm::rotate(model, timeValue, { 0.0f, 0.0f, 1.0f });
 
-    glBindVertexArray(vao);
+        glm::mat4 mvp = projection * view * model;
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+        shader.setMatrix4fv("mvp", mvp);
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glBindVertexArray(0);
+    }
+
 }
 
 void Display::render()
