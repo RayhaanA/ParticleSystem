@@ -22,14 +22,15 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Display.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Display.cpp" />
-    <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
@@ -118,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glm;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\gflw;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\lib;C:\Users\Rayhaan\Programming\OpenGL\glm\glm;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -151,6 +153,7 @@
       <SDLCheck>true</SDLCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glm;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\gflw;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

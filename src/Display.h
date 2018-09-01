@@ -1,11 +1,10 @@
 #pragma once
-#include <glew.h>
-#include <glfw3.h>
-#include <glm.hpp>
-#include <vector>
 #include "Shader.h"
 #include "Camera.h"
 #include "Particle.h"
+#include <glfw3.h>
+#include <glm.hpp>
+#include <vector>
 
 class Display
 {
@@ -25,7 +24,7 @@ public:
     Display();
     ~Display();
     GLFWwindow* getWindow() const;
-    void update(GLuint vao, Shader shader, Camera& camera, double elapsedTime, std::vector<Particle>& particles);
+    void update(Shader shader, Camera& camera, double elapsedTime, std::vector<Particle>& particles);
     void render();
     void setBackgroundColour(GLclampf r, GLclampf g, GLclampf b, GLclampf a);
 };

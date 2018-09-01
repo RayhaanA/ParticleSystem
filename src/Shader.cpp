@@ -1,8 +1,8 @@
 #include "Shader.h"
+#include <gtc\type_ptr.hpp>
 #include <string>
 #include <iostream>
 #include <vector>
-#include <gtc\type_ptr.hpp>
 
 Shader::Shader(const std::string &vertexShader, const std::string &fragmentShader)
 {

@@ -1,10 +1,9 @@
 #include "Display.h"
+#include "Particle.h"
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
 #include <iostream>
-#include "InputManager.h"
-#include "Particle.h"
 
 void print4x4(glm::mat4 m)
 {
@@ -55,7 +54,7 @@ GLFWwindow* Display::getWindow() const
     return window;
 }
 
-void Display::update(GLuint vao, Shader shader, Camera& camera, double elapsedTime, std::vector<Particle>& particles)
+void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vector<Particle>& particles)
 {
     glClearColor(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -75,19 +74,15 @@ void Display::update(GLuint vao, Shader shader, Camera& camera, double elapsedTi
     for (unsigned int i = 0; i < Particle::MAX_PARTICLES; i++)
     {
         particles[i].update(elapsedTime);
-        glBindVertexArray(vao);
-
         glm::mat4 model;
         model = glm::translate(model, particles[i].position);
-        model = glm::rotate(model, timeValue, { 0.0f, 0.0f, 1.0f });
+        model = glm::rotate(model, timeValue, { 0.4f, 0.8f, 0.2f });
 
         glm::mat4 mvp = projection * view * model;
 
         shader.setMatrix4fv("mvp", mvp);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-        glBindVertexArray(0);
+        
+        Particle::draw();
     }
 
 }

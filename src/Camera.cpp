@@ -15,10 +15,6 @@ Camera::Camera()
     _sensitivity = 0.0025f;
 }
 
-Camera::~Camera()
-{
-}
-
 void Camera::updateCameraView()
 {   
     glm::quat qPitch = glm::angleAxis(_pitch, glm::vec3(1, 0, 0));

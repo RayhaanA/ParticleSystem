@@ -1,6 +1,5 @@
 #pragma once
 #include <glm.hpp>
-#include <gtc\quaternion.hpp>
 
 class Camera
 {
@@ -19,7 +18,7 @@ public:
     float DEFAULT_CAM_SPEED = 0.03f;
     float SHIFT_CAM_SPEED = 0.2f;
     Camera();
-    ~Camera();
+    ~Camera() = default;
     void updateCameraView();
     void setViewDirection(glm::vec3 d);
     glm::vec3 getViewDirection() const;

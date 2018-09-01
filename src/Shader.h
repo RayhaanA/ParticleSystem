@@ -1,7 +1,7 @@
 #pragma once
-#include <fstream>
 #include <glew.h>
 #include <glm.hpp>
+#include <fstream>
 
 class Shader
 {
