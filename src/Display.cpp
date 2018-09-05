@@ -76,34 +76,26 @@ void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vec
     glm::mat4 view = camera.view();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
-    std::map<float, unsigned int> sorted;
+    // Sort by particle colour's distance to fix transparency
+    std::sort(particles.begin(),
+        particles.end(),
+        [&camera](const Particle& lhs, const Particle& rhs)
+    {
+        return glm::length(camera.position() - lhs.position) > glm::length(camera.position() - rhs.position);
+
+    });
+
     for (unsigned int i = 0; i < particles.size(); i++)
     {
-        float distance = glm::length(camera.position() - particles[i].position);
-        sorted[distance] = i;
-    }
-
-    for (auto it = sorted.rbegin(); it != sorted.rend(); ++it)
-    {
-        unsigned int i = it->second;
-        particles[i].update(elapsedTime);
-
-        // Sort by particle colour's alpha value to fix tranparency
-        /*std::sort(particles.begin(),
-            particles.end(),
-            [](const Particle& lhs, const Particle& rhs)
-        {
-            return lhs.colour.a > rhs.colour.a;
-
-        });*/
-
         shader.set4fv("newColour", glm::vec4(particles[i].colour.r, particles[i].colour.g, particles[i].colour.b, particles[i].colour.a));
 
         glm::mat4 mvp = projection * view * particles[i].model;
 
         shader.setMatrix4fv("mvp", mvp);
-        
+
         Particle::draw();
+
+        particles[i].update(elapsedTime);
     }
 
 }
