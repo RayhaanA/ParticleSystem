@@ -12,13 +12,7 @@ private:
     const float SCREEN_HEIGHT = 720.f;
     const float SCREEN_WIDTH = 1280.f;
     GLFWwindow* window;
-    struct BackgroundColour
-    {
-        GLclampf r = 0.0f;
-        GLclampf g = 0.0f;
-        GLclampf b = 0.0f;
-        GLclampf a = 1.0f;
-    } backgroundColour;
+    Colour backgroundColour;
 
 public:
     Display();

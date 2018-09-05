@@ -4,6 +4,8 @@
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
 #include <iostream>
+#include <algorithm>
+#include <map>
 
 void print4x4(glm::mat4 m)
 {
@@ -31,17 +33,25 @@ Display::Display()
     }
     
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSwapInterval(1); // 1 - Enables vsync, 0 - disables
 
     glfwMakeContextCurrent(window);
-
+        
     glewExperimental = GL_TRUE;
     glewInit();
 
+    // Depth buffer enable
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
+    // Colour blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Interpolate
+
     // Wireframe mode: GL_LINE, Normal: GL_FILL
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    backgroundColour = Colour(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 Display::~Display()
@@ -61,24 +71,35 @@ void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vec
 
     shader.useShader();
 
-    float timeValue = static_cast<float>(glfwGetTime());
-    float greenValue = sin(timeValue) / 2.0f + 0.5f;
-
-    shader.set4fv("newColour", glm::vec4(greenValue, greenValue, greenValue, 1.0));
-
     camera.speed() = 20.0f * static_cast<float>(elapsedTime);
    
     glm::mat4 view = camera.view();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
-    for (unsigned int i = 0; i < Particle::MAX_PARTICLES; i++)
+    std::map<float, unsigned int> sorted;
+    for (unsigned int i = 0; i < particles.size(); i++)
     {
-        particles[i].update(elapsedTime);
-        glm::mat4 model;
-        model = glm::translate(model, particles[i].position);
-        model = glm::rotate(model, timeValue, { 0.4f, 0.8f, 0.2f });
+        float distance = glm::length(camera.position() - particles[i].position);
+        sorted[distance] = i;
+    }
 
-        glm::mat4 mvp = projection * view * model;
+    for (auto it = sorted.rbegin(); it != sorted.rend(); ++it)
+    {
+        unsigned int i = it->second;
+        particles[i].update(elapsedTime);
+
+        // Sort by particle colour's alpha value to fix tranparency
+        /*std::sort(particles.begin(),
+            particles.end(),
+            [](const Particle& lhs, const Particle& rhs)
+        {
+            return lhs.colour.a > rhs.colour.a;
+
+        });*/
+
+        shader.set4fv("newColour", glm::vec4(particles[i].colour.r, particles[i].colour.g, particles[i].colour.b, particles[i].colour.a));
+
+        glm::mat4 mvp = projection * view * particles[i].model;
 
         shader.setMatrix4fv("mvp", mvp);
         

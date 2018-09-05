@@ -2,11 +2,15 @@
 #include "InputManager.h"
 #include <iostream>
 #include <string>
+#include <thread>
+
+const unsigned int fps = 200;
+void limitFPS(unsigned int FPS, double start);
 
 int main()
 {
-    std::ios_base::sync_with_stdio(false);
-    
+    std::ios_base::sync_with_stdio(false); // Faster cout for debugging
+
     Display display;
 
     Camera camera;
@@ -45,6 +49,8 @@ int main()
 
         deltaTime = currentFrame - lastFrame;
         
+        camera.speed() = 20.0f * static_cast<float>(deltaTime);
+
         glfwGetCursorPos(display.getWindow(), &xPos, &yPos);
 
         InputManager::processKeyPress(display.getWindow(), camera);
@@ -57,7 +63,16 @@ int main()
         display.render();
 
         lastFrame = currentFrame;
+
+        //limitFPS(fps, currentFrame);
     }
 
     return 0;
+}
+
+// Thread sleeps so that only a max of 'FPS' frames are drawn per second
+void limitFPS(unsigned int FPS, double start)
+{
+    auto timeToSleep = static_cast<std::chrono::milliseconds>(static_cast<long long>((1000 / FPS - (glfwGetTime() * 1000 - start * 1000))));
+    std::this_thread::sleep_for(timeToSleep);
 }
