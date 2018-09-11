@@ -25,12 +25,9 @@ int main()
 
     std::vector<Particle> particles;
     
-    for (unsigned int i = 0; i < Particle::MAX_PARTICLES / 10; i++)
+    for (unsigned int i = 0; i < Particle::MAX_PARTICLES; i++)
     {
-        for (unsigned int j = 0; j < Particle::MAX_PARTICLES / 10; j++)
-        {
-            particles.push_back(Particle({ -10.0f + i * 2.0f, -10.0f + j * 2.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }));
-        }
+            particles.push_back(Particle());
     }
 
     display.setBackgroundColour(0.055f, 0.067f, 0.067f, 1.0f);

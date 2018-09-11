@@ -5,7 +5,6 @@
 #include <gtc\type_ptr.hpp>
 #include <iostream>
 #include <algorithm>
-#include <map>
 
 void print4x4(glm::mat4 m)
 {
@@ -77,13 +76,11 @@ void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vec
     glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
     // Sort by particle colour's distance to fix transparency
-    std::sort(particles.begin(),
-        particles.end(),
+    std::sort(particles.begin(), particles.end(),
         [&camera](const Particle& lhs, const Particle& rhs)
-    {
-        return glm::length(camera.position() - lhs.position) > glm::length(camera.position() - rhs.position);
-
-    });
+        {
+            return glm::length(camera.position() - lhs.position) > glm::length(camera.position() - rhs.position);
+        });
 
     for (unsigned int i = 0; i < particles.size(); i++)
     {
@@ -97,7 +94,6 @@ void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vec
 
         particles[i].update(elapsedTime);
     }
-
 }
 
 void Display::render()

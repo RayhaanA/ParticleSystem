@@ -56,7 +56,7 @@ struct Particle
     Colour colour;
 
     Particle();
-    Particle(glm::vec3 pos, glm::vec3 vel);
+    Particle(glm::vec3 pos, glm::vec3 vel, float fade, Colour colour);
     ~Particle() = default;
 
     void update(double elapsedTime);

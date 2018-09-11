@@ -5,7 +5,7 @@
 
 Camera::Camera()
 {
-    _position = { 0.0f, 0.0f, 30.0f };
+    _position = { 0.0f, 0.0f, 50.0f };
     _up = { 0.0f, 1.0f, 0.0f };
     _direction = { 0.0f, 0.0f, -1.0f };
     _speed = 0.03f;
