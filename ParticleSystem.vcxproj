@@ -118,11 +118,11 @@
       <Optimization>MaxSpeed</Optimization>
       <SDLCheck>true</SDLCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glm;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\gflw;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\inc\glm;$(ProjectDir)\inc\gflw;$(ProjectDir)\inc\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\lib;C:\Users\Rayhaan\Programming\OpenGL\glm\glm;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib;C:\Users\Rayhaan\Programming\OpenGL\glm\glm;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -152,13 +152,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glm;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\gflw;C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\inc\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\inc\glm;$(ProjectDir)\inc\gflw;$(ProjectDir)\inc\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\Rayhaan\Documents\Visual Studio 2017\Projects\Learning OpenGL\OpenGL Introduction\lib;C:\Users\Rayhaan\Programming\OpenGL\glm\glm\gtx;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib;C:\Users\Rayhaan\Programming\OpenGL\glm\glm\gtx;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
