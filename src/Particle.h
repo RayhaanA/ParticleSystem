@@ -38,12 +38,15 @@ struct Colour
 struct Particle
 {
     static const unsigned int MAX_PARTICLES;
-    
+    static GLuint modelsVBO;
+
     static Mesh& MeshInstance(); // Each particle will have the same mesh data
 
     const float SLOW = 0.01f;
     const float NORMAL = 0.1f;
     const float FAST = 1.0f;
+
+    unsigned int index; // To keep reference to its position in the main model matrix array
 
     float speed;
     float life;
@@ -56,12 +59,14 @@ struct Particle
     Colour colour;
 
     Particle();
+    Particle(unsigned int i);
     Particle(glm::vec3 pos, glm::vec3 vel, float fade, Colour colour);
     ~Particle() = default;
 
     void update(double elapsedTime);
 
-    static void draw();
+    static void drawIndexed();
+    static void drawInstanced();
 
     Particle& Particle::operator=(const Particle &rhs)
     {

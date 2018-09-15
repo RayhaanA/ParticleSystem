@@ -5,6 +5,7 @@
 #include <algorithm>
 
 const unsigned int Particle::MAX_PARTICLES = 1000;
+GLuint Particle::modelsVBO = 0;
 
 // For random particle parameters
 std::random_device rd;
@@ -30,7 +31,19 @@ Particle::Particle()
     gravity = { 0.0f, -0.006f, 0.0f };
 
     colour = Colour(dis(gen), dis(gen), dis(gen), 1.0f);
+}
 
+Particle::Particle(unsigned int i)
+{
+    index = i;
+    speed = NORMAL;
+    position = { 0.0f, 0.0f, 0.0f };
+    velocity = { vel(gen), std::fabs(vel(gen)) + 0.3f, vel(gen) };
+    life = std::max(dis(gen), 0.1f); // Make life random at the beginning so it starts more naturally
+    fade = std::max(dis(gen), 0.1f) / 200.0f;
+    gravity = { 0.0f, -0.006f, 0.0f };
+
+    colour = Colour(dis(gen), dis(gen), dis(gen), 1.0f);
 }
 
 Particle::Particle(glm::vec3 pos, glm::vec3 vel, float fade, Colour colour) : position(pos), velocity(vel), fade(fade), colour(colour)
@@ -57,9 +70,17 @@ void Particle::update(double elapsedTime)
     model = glm::mat4();
     model = glm::translate(model, position);
     //model = glm::rotate(model, static_cast<float>(glfwGetTime()), { 0.4f, 0.8f, 0.2f });
+
+    glBindBuffer(GL_ARRAY_BUFFER, modelsVBO);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * index, sizeof(glm::mat4), &model);
 }
 
-void Particle::draw()
+void Particle::drawIndexed()
 {
-    MeshInstance().draw();
+    MeshInstance().drawIndexed();
+}
+
+void Particle::drawInstanced()
+{
+    MeshInstance().drawInstanced(MAX_PARTICLES);
 }

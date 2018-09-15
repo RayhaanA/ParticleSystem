@@ -23,7 +23,7 @@ Display::Display()
 
     glfwWindowHint(GLFW_SAMPLES, 4);
 
-    window = glfwCreateWindow(static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT), "Particle System", nullptr, nullptr);
+    window = glfwCreateWindow(static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT), "Particle System", nullptr/*glfwGetPrimaryMonitor()*/, nullptr);
 
     if (!window) 
     {
@@ -32,7 +32,6 @@ Display::Display()
     }
     
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSwapInterval(1); // 1 - Enables vsync, 0 - disables
 
     glfwMakeContextCurrent(window);
         
@@ -75,6 +74,9 @@ void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vec
     glm::mat4 view = camera.view();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 1000.0f);
 
+    shader.setMatrix4fv("view", view);
+    shader.setMatrix4fv("projection", projection);
+
     // Sort by particle colour's distance to fix transparency
     std::sort(particles.begin(), particles.end(),
         [&camera](const Particle& lhs, const Particle& rhs)
@@ -86,14 +88,12 @@ void Display::update(Shader shader, Camera& camera, double elapsedTime, std::vec
     {
         shader.set4fv("newColour", glm::vec4(particles[i].colour.r, particles[i].colour.g, particles[i].colour.b, particles[i].colour.a));
 
-        glm::mat4 mvp = projection * view * particles[i].model;
-
-        shader.setMatrix4fv("mvp", mvp);
-
-        Particle::draw();
+        shader.setMatrix4fv("m", particles[i].model);
 
         particles[i].update(elapsedTime);
     }
+
+    Particle::drawInstanced();
 }
 
 void Display::render()

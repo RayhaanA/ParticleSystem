@@ -5,9 +5,10 @@
 class Mesh
 {
 private:
-    GLuint vbo;
+    GLuint vertexVBO;
     GLuint ebo;
-    void setup();
+    void setupIndexingMethod();
+    void setupInstancingMethod();
 public:
     GLuint vao;
     std::vector<float> vertices;
@@ -18,5 +19,6 @@ public:
     Mesh(std::vector<float> v, std::vector<unsigned int> i);
     ~Mesh();
 
-    void draw();
+    void drawIndexed();
+    void drawInstanced(unsigned int numParticles);
 };
