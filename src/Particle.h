@@ -5,30 +5,22 @@
 
 struct Colour
 {
-    float r;
-    float g;
-    float b;
-    float a;
+    glm::vec4 data;
 
     Colour()
     {
-        r = 1.0f;
-        g = 1.0f;
-        b = 1.0f;
-        a = 1.0f;
+        data = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    Colour(float r, float g, float b, float a) : r(r), g(g), b(b), a(a)
+    Colour(float r, float g, float b, float a) : data(r, g, b, a)
     {}
+
 
     Colour& Colour::operator=(const Colour &rhs)
     {
         if (this != &rhs)
         {
-            r = rhs.r;
-            g = rhs.g;
-            b = rhs.b;
-            a = rhs.a;
+            data = rhs.data;
         }
         return *this;
     }
@@ -39,6 +31,9 @@ struct Particle
 {
     static const unsigned int MAX_PARTICLES;
     static GLuint modelsVBO;
+    static GLuint coloursVBO;
+    static std::vector<glm::mat4> models;
+    static std::vector<glm::vec4> colours;
 
     static Mesh& MeshInstance(); // Each particle will have the same mesh data
 

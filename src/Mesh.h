@@ -7,8 +7,7 @@ class Mesh
 private:
     GLuint vertexVBO;
     GLuint ebo;
-    void setupIndexingMethod();
-    void setupInstancingMethod();
+    void setup();
 public:
     GLuint vao;
     std::vector<float> vertices;

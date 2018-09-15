@@ -4,8 +4,12 @@
 #include <random>
 #include <algorithm>
 
-const unsigned int Particle::MAX_PARTICLES = 1000;
+const unsigned int Particle::MAX_PARTICLES = 25000;
 GLuint Particle::modelsVBO = 0;
+GLuint Particle::coloursVBO = 0;
+
+std::vector<glm::mat4> Particle::models = {};
+std::vector<glm::vec4> Particle::colours = {};
 
 // For random particle parameters
 std::random_device rd;
@@ -42,7 +46,7 @@ Particle::Particle(unsigned int i)
     life = std::max(dis(gen), 0.1f); // Make life random at the beginning so it starts more naturally
     fade = std::max(dis(gen), 0.1f) / 200.0f;
     gravity = { 0.0f, -0.006f, 0.0f };
-
+    model = glm::translate(model, position);
     colour = Colour(dis(gen), dis(gen), dis(gen), 1.0f);
 }
 
@@ -65,14 +69,15 @@ void Particle::update(double elapsedTime)
         velocity = { vel(gen), std::fabs(vel(gen)) + 0.3f, vel(gen) };
         life = 1.0;
     }
-    colour.a = life;
+    colour.data.w = life;
 
     model = glm::mat4();
     model = glm::translate(model, position);
-    //model = glm::rotate(model, static_cast<float>(glfwGetTime()), { 0.4f, 0.8f, 0.2f });
 
-    glBindBuffer(GL_ARRAY_BUFFER, modelsVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * index, sizeof(glm::mat4), &model);
+    models[index] = model;
+    colours[index] = colour.data;
+
+    //model = glm::rotate(model, static_cast<float>(glfwGetTime()), { 0.4f, 0.8f, 0.2f });
 }
 
 void Particle::drawIndexed()

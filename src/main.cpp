@@ -6,6 +6,13 @@
 
 const unsigned int fps = 60;
 void limitFPS(unsigned int FPS, double start);
+void print4x4(glm::mat4 m)
+{
+    std::cout << m[0][0] << " " << m[0][1] << " " << m[0][2] << " " << m[0][3] << "\n"
+        << m[1][0] << " " << m[1][1] << " " << m[1][2] << " " << m[1][3] << "\n"
+        << m[2][0] << " " << m[2][1] << " " << m[2][2] << " " << m[2][3] << "\n"
+        << m[3][0] << " " << m[3][1] << " " << m[3][2] << " " << m[3][3] << "\n\n";
+}
 
 int main()
 {
@@ -24,38 +31,52 @@ int main()
     std::cout << "Version: " << version << "\n";
 
     std::vector<Particle> particles;
-    std::vector<glm::mat4> models;
 
     for (unsigned int i = 0; i < Particle::MAX_PARTICLES; i++)
     {
             particles.push_back(Particle(i));
-            models.push_back(particles[i].model);
+            Particle::models.push_back(particles[i].model);
+            Particle::colours.push_back(particles[i].colour.data);
     }
+
+    glBindVertexArray(Particle::MeshInstance().vao);
 
     glGenBuffers(1, &Particle::modelsVBO);
     glBindBuffer(GL_ARRAY_BUFFER, Particle::modelsVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * models.size(), models.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * Particle::models.size(), Particle::models.data(), GL_DYNAMIC_DRAW);
  
-    for (unsigned int i = 0; i < models.size(); i++)
+    for (unsigned int i = 0; i < Particle::models.size(); i++)
     {
-        glBindVertexArray(Particle::MeshInstance().vao);
         // set attribute pointers for matrix (4 times vec4)
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)(sizeof(glm::vec4)));
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)(2 * sizeof(glm::vec4)));
         glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)(3 * sizeof(glm::vec4)));
 
         glVertexAttribDivisor(1, 1);
         glVertexAttribDivisor(2, 1);
         glVertexAttribDivisor(3, 1);
         glVertexAttribDivisor(4, 1);
-
-        glBindVertexArray(0);
     }
+    
+    glGenBuffers(1, &Particle::coloursVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, Particle::coloursVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * Particle::colours.size(), Particle::colours.data(), GL_DYNAMIC_DRAW);
+
+    for (unsigned int i = 0; i < Particle::colours.size(); i++)
+    {
+        // set attribute pointers for matrix (4 times vec4)
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+
+        glVertexAttribDivisor(5, 1);
+    }
+
+    glBindVertexArray(0);
 
     display.setBackgroundColour(0.055f, 0.067f, 0.067f, 1.0f);
 

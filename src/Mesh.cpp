@@ -6,7 +6,7 @@ Mesh::Mesh()
     vao = vertexVBO = ebo = 0;
     vertices = {};
     indices = {};
-    setupIndexingMethod();
+    setup();
 }
 
 Mesh::Mesh(std::vector<float> v, std::vector<unsigned int> i)
@@ -14,7 +14,7 @@ Mesh::Mesh(std::vector<float> v, std::vector<unsigned int> i)
     vao = vertexVBO = ebo = 0;
     vertices = v;
     indices = i;
-    setupInstancingMethod();
+    setup();
 }
 
 Mesh::~Mesh()
@@ -24,7 +24,7 @@ Mesh::~Mesh()
     glDeleteBuffers(1, &ebo);
 }
 
-void Mesh::setupIndexingMethod()
+void Mesh::setup()
 {
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vertexVBO);
@@ -41,25 +41,7 @@ void Mesh::setupIndexingMethod()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
 
-    glBindVertexArray(0);
-}
-
-void Mesh::setupInstancingMethod()
-{
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vertexVBO);
-    glGenBuffers(1, &ebo);
-
-    glBindVertexArray(vao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(0);
+    glVertexAttribDivisor(0, 0);
 
     glBindVertexArray(0);
 }
